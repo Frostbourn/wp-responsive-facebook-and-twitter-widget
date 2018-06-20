@@ -1,0 +1,262 @@
+/**
+ * JS Social Tabs Slider
+ * @license    GNU/GPL http://www.gnu.org/copyleft/gpl.html
+ * @link       https://jsns.eu
+ */
+
+.social_slider {
+    position: fixed;
+    right: -370px;
+    z-index: 99997;
+    -webkit-transition: right 1s ease-in-out;
+    -moz-transition: right 1s ease-in-out;
+    -o-transition: right 1s ease-in-out;
+    transition: right 1s ease-in-out;
+    -webkit-backface-visibility: hidden;
+    box-sizing: content-box !important;
+}
+
+.social_slider:hover {
+    right: 0px;
+}
+
+.social_slider i {
+    visibility: hidden;
+}
+
+.social_slider a:hover {
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.social_slider section {
+    display: none;
+    height: 100%;
+}
+
+.social_slider input[type="radio"] {
+    display: none !important;
+}
+
+.social_slider #tab1:checked~label~#content1 {
+    display: block;
+}
+
+.social_slider #tab2:checked~label~#content2 {
+    display: block;
+}
+
+
+/*----- Content of Tabs -----*/
+
+.social_slider {
+    background: transparent;
+    float: left;
+    width: 370px;
+}
+
+.social_slider .facebook_box {
+    border-radius: 8px;
+    background-color: #fff;
+    position: absolute;
+    z-index: 99998;
+    width: 350px;
+}
+
+.social_slider a.active {
+    z-index: 99999;
+    position: relative;
+}
+
+.social_slider .twitter_box {
+    border-radius: 8px;
+    position: absolute;
+    z-index: 99998;
+    background: #fff;
+    width: 350px;
+}
+
+.social_slider .twitter_box #twitter-widget-0 {
+    min-height: 470px !important;
+}
+
+
+/*@keyframes fadeInScale {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.social_slider .facebook_box, .social_slider .twitter_box {
+    -webkit-animation: fadeInScale 0.1s ease-in-out;
+    -moz-animation: fadeInScale 0.1s ease-in-out;
+    animation: fadeInScale 0.1s ease-in-out;
+}*/
+
+.social_slider .copyrightlink {
+    display: block;
+    position: relative;
+    background: transparent;
+    color: #fff;
+    font-size: 10px;
+    margin: 500px 15px;
+    text-decoration: none;
+    text-shadow: none !important;
+}
+
+.social_slider {
+    position: fixed;
+    right: -370px;
+    top: 120px;
+    z-index: 99997;
+}
+
+
+/*----- Icons -----*/
+
+.social_slider .facebook_icon {
+    float: left;
+    height: 115px;
+    width: 32px;
+    background: url("../images/fb1.png") no-repeat;
+    cursor: pointer;
+    position: relative;
+    z-index: 99998;
+    display: block;
+    top: 50px;
+    right: 32px;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.social_slider .facebook_icon:hover {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    z-index: 99999;
+}
+
+.social_slider .twitter_icon {
+    float: left;
+    height: 115px;
+    width: 32px;
+    background: url("../images/tw1.png") no-repeat;
+    cursor: pointer;
+    position: relative;
+    z-index: 99998;
+    display: block;
+    top: 170px;
+    right: 64px;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.social_slider .twitter_icon:hover {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    z-index: 99999;
+}
+
+.social_slider .facebook_box {
+    border: 10px solid #3289d9;
+}
+
+.social_slider .twitter_box {
+    border: 10px solid #27a4d9;
+}
+
+#social_mobile {
+    position: relative;
+    z-index: 10000;
+}
+
+#social_mobile a {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    line-height: 24px;
+    display: list-item;
+    list-style-type: none;
+    padding: 5px 0;
+    text-align: center;
+    color: #fff;
+    transition-duration: 0.5s;
+    transition-property: (width);
+    transition-timing-function: ease-in-out;
+}
+
+#social_mobile a:hover {
+    outline: 0 none !important;
+    color: #fff;
+    width: 55px;
+    transition-duration: 0.5s !important;
+    transition-property: (width);
+    transition-timing-function: ease-in-out;
+}
+
+#social_mobile a.titleText {
+    display: none;
+}
+
+
+/* icon sizes */
+
+#social_mobile i {
+  font-family: FontAwesome;
+    line-height: inherit;
+    font-size: 24px;
+    text-align: center;
+    margin-top: 7px;
+    color: #ffffff;
+}
+
+#social_mobile .top-left {
+    position: fixed;
+    top: 20%;
+    left: 0;
+}
+
+
+/* facebook */
+
+#social_mobile .facebook {
+    background-color: #305891;
+}
+
+
+/* twitter */
+
+#social_mobile .twitter {
+    background-color: #05aced;
+}
+
+#social_mobile .facebook:hover {
+    background-color: #284978;
+}
+
+
+/* twitter */
+
+#social_mobile .twitter:hover {
+    background-color: #0499d4;
+}
+
+#social_mobile .mtop5 {
+    margin-top: 5px;
+}
+
+#social_mobile {
+    margin-top: 50px;
+    display: inline;
+}
+
+#social_mobile .top-left {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+}
