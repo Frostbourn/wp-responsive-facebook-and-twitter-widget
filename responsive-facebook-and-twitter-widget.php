@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://jsns.eu/products/js-facebook-likebox-slider
 AUthor: Jakub Skowroński
 Author URI: https://jsns.eu
-Version: 1.0
+Version: 1.0.5
 License: GPLv2 or later
 */
 
