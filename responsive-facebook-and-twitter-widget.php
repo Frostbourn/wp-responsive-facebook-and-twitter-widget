@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://jsns.eu/products/js-facebook-likebox-slider
 AUthor: Jakub Skowroński
 Author URI: https://jsns.eu
-Version: 1.0.5
+Version: 1.0.7
 License: GPLv2 or later
 */
 
@@ -141,10 +141,18 @@ function jsftrwlikebox_down()
 									<label for="tab1" class="facebook_icon"  style="max-width: 32px;"></label>
 									<section id="content1">
 										<div class="facebook_box">
-											<iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/<?php
-			echo get_option('profile_id'); ?>&tabs=timeline&width=350&height=470&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=true" width="350" height="470" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true">
-											</iframe>
-										 </div>
+											<div id="fb-root"></div>
+												<script>(function(d, s, id) {
+												  var js, fjs = d.getElementsByTagName(s)[0];
+												  if (d.getElementById(id)) return;
+												  js = d.createElement(s); js.id = id;
+												  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1&autoLogAppEvents=1';
+												  fjs.parentNode.insertBefore(js, fjs);
+												}(document, 'script', 'facebook-jssdk'));</script>
+												<div class="fb-page" data-href="https://www.facebook.com/<?php
+				echo get_option('profile_id'); ?>" data-tabs="timeline" data-width="350" data-height="494" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="true"></div>
+												
+											 </div>
 								</section>
 			<?php
 			}
@@ -222,7 +230,8 @@ function jsftrwlikebox_opcje()
 	echo '<form method="post">';
 	settings_fields('jslbox-settings');
 	do_settings_sections('responsive-facebook-and-twitter-widget');
-	echo '<table class="form-table">';
+	echo '<h3>Follow these steps to find your Facebook & Twitter ID: <a href="https://docs.jsns.eu/documentation/js-social-slider" target="_blank">Tutorial</a></h3>
+	<table class="form-table">';
 	foreach($lbox_opcje as $opcja)
 		{
 		echo '<tr valign="top"><th scope="row">' . $opcja['label'] . '</th><td>';
