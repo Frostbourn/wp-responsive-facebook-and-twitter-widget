@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://jsns.eu/products/js-facebook-likebox-slider
 AUthor: Jakub Skowroński
 Author URI: https://jsns.eu
-Version: 1.0.7
+Version: 1.1.0
 License: GPLv2 or later
 */
 
@@ -49,6 +49,17 @@ $lbox_opcje = Array(
 		'label' => 'Twitter ID',
 		'opis' => 'Twitter account ID'
 	) ,
+	Array(
+		'nazwa' => 'border-radius',
+		'typ' => 'radio',
+		'default' => '1',
+		'label' => 'Rounded icons',
+		'opis' => 'Change the border radius of the icons',
+		'options' => Array(
+			0 => 'No',
+			1 => 'Yes'
+		)
+	) ,
 );
 add_action('wp_head', 'jsftrwlikebox_up');
 
@@ -63,12 +74,6 @@ add_action('wp_footer', 'jsftrwlikebox_down');
 
 function jsftrwlikebox_down()
 	{
-	require_once (plugin_dir_path(__FILE__) . 'assets/mobile_detect.php');
-
-	$detect = new Mobile_Detect;
-	if ($detect->isMobile())
-		{
-
 		// ______________________MOBILE________________________
 
 		if (trim(get_option('facebook')) == 1)
@@ -92,7 +97,13 @@ function jsftrwlikebox_down()
 		$sum = $f + $t;
 ?>
 	  <style>
-	  @media only screen and (min-device-width: 0px) and (max-width:961px){
+	  @media only screen and (min-device-width:0) and (max-width:768px) {
+    	.social_slider {
+        display: none !important;
+   		}
+			#social_mobile {
+					display: inline !important;
+			}
  			#social_mobile a{
 	          position: relative;
 	          float: left;
@@ -102,7 +113,7 @@ function jsftrwlikebox_down()
 	          list-style-type: none;
 	      }
 
-	      #social_mobile a:focus, #social_mobile a:hover {
+	    #social_mobile a:focus, #social_mobile a:hover {
 	          width: calc(100% / <?php
 		echo $sum; ?>);
 	          -moz-transition-property: none;
@@ -110,8 +121,12 @@ function jsftrwlikebox_down()
 	          -o-transition-property: none;
 	          transition-property: none;
 	      }
-
-	  }
+		}
+		<?php if (trim(get_option('border-radius')) == 1) { ?>
+			.social_slider .facebook_icon, .social_slider .twitter_icon	{
+						border-radius: 5px 0 0 5px !important;
+				}
+				<?php } ?>
 
 	   </style>
 	  <div id="social_mobile"><div class="top-left">
@@ -131,9 +146,7 @@ function jsftrwlikebox_down()
 			} ?>
 	  </div></div>
 	  <?php
-		}
-	  else
-		{
+
 ?> <div class="social_slider" style="top: 10vh;"> <?php
 		if (trim(get_option('facebook')) == 1)
 			{ ?>
@@ -192,7 +205,6 @@ function jsftrwlikebox_down()
 			</div>
 			<?php
 		}
-	}
 
 add_action('admin_init', 'jsftrwlikebox_settings');
 

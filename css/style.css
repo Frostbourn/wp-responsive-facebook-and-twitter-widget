@@ -4,6 +4,15 @@
  * @link       https://jsns.eu
  */
 
+ @media(min-width:768px) {
+    .social_slider {
+        display: block !important;
+    }
+
+    #social_mobile {
+        display: none !important;
+    }
+}
 .social_slider {
     position: fixed;
     right: -370px;
