@@ -4,7 +4,17 @@
  * @link       https://jsns.eu
  */
 
- @media(min-width:768px) {
+@media only screen and (min-device-width:0) and (max-width:768px) {
+    .social_slider {
+        display: none !important;
+    }
+
+    #social_mobile {
+        display: inline !important;
+    }
+}
+
+@media(min-width:768px) {
     .social_slider {
         display: block !important;
     }
@@ -13,6 +23,7 @@
         display: none !important;
     }
 }
+
 .social_slider {
     position: fixed;
     right: -370px;
@@ -215,7 +226,7 @@
 /* icon sizes */
 
 #social_mobile i {
-  font-family: FontAwesome;
+    font-family: FontAwesome;
     line-height: inherit;
     font-size: 24px;
     text-align: center;
