@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.2.0
+Version: 1.2.5
 License: GPLv2 or later
 */
 
@@ -76,7 +76,7 @@ add_action('wp_head', 'jsftrwlikebox_up');
 
 function jsftrwlikebox_up()
 {
-    wp_enqueue_style('style', plugin_dir_url(__FILE__) . 'css/style.css');
+    wp_enqueue_style('style', plugin_dir_url(__FILE__) . 'css/style.min.css');
     wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 }
 
