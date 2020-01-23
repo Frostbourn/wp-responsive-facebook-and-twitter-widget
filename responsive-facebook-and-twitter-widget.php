@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.2.5
+Version: 1.2.6
 License: GPLv2 or later
 */
 
@@ -23,7 +23,7 @@ $lbox_opcje = array(
             0 => 'No',
             1 => 'Yes'
         )
-    ) ,
+    ),
     array(
         'nazwa' => 'border-radius',
         'typ' => 'radio',
@@ -34,7 +34,7 @@ $lbox_opcje = array(
             0 => 'No',
             1 => 'Yes'
         )
-    ) ,
+    ),
     array(
         'nazwa' => 'facebook',
         'typ' => 'radio',
@@ -45,14 +45,14 @@ $lbox_opcje = array(
             0 => 'No',
             1 => 'Yes'
         )
-    ) ,
+    ),
     array(
         'nazwa' => 'profile_id',
         'typ' => 'text',
         'default' => 'facebook',
         'label' => 'Page ID',
         'opis' => 'Facebook Page ID'
-    ) ,
+    ),
     array(
         'nazwa' => 'twitter',
         'typ' => 'radio',
@@ -63,14 +63,14 @@ $lbox_opcje = array(
             0 => 'No',
             1 => 'Yes'
         )
-    ) ,
+    ),
     array(
         'nazwa' => 'twitter_login',
         'typ' => 'text',
         'default' => 'twitter',
         'label' => 'Twitter ID',
         'opis' => 'Twitter account ID'
-    ) ,
+    ),
 );
 add_action('wp_head', 'jsftrwlikebox_up');
 
@@ -86,7 +86,16 @@ add_action('wp_footer', 'jsftrwlikebox_down');
 function jsftrwlikebox_down()
 {
     if (trim(get_option('show_on_mobile')) == 1) {
-        // ______________________MOBILE________________________
+
+        $iPhone  = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
+        $iPad    = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
+        $Android = stripos($_SERVER['HTTP_USER_AGENT'], "Android");
+
+        if ($iPhone || $iPad) {
+            $fb_url = 'fb://profile/' . get_option('profile_id');
+        } else if ($Android) {
+            $fb_url = 'fb://page/' . get_option('profile_id');
+        }
 
         if (trim(get_option('facebook')) == 1) {
             $t = 1;
@@ -101,103 +110,112 @@ function jsftrwlikebox_down()
         }
 
         $sum = $f + $t; ?>
-			<style>
-			@media only screen and (min-device-width:0) and (max-width:768px) {
-				.social_slider {
-				display: none !important;
-				}
-					#social_mobile {
-							display: inline !important;
-					}
-					#social_mobile a{
-					position: relative;
-					float: left;
-					width: calc(100% / <?php
-                echo $sum; ?>);
-					display:list-item;
-					list-style-type: none;
-				}
+        <style>
+            @media only screen and (min-device-width:0) and (max-width:768px) {
+                .social_slider {
+                    display: none !important;
+                }
 
-				#social_mobile a:focus, #social_mobile a:hover {
-					width: calc(100% / <?php
-                echo $sum; ?>);
-					-moz-transition-property: none;
-					-webkit-transition-property: none;
-					-o-transition-property: none;
-					transition-property: none;
-				}
-				}
-				<?php if (trim(get_option('border-radius')) == 1) { ?>
-					.social_slider .facebook_icon, .social_slider .twitter_icon	{
-								border-radius: 5px 0 0 5px !important;
-						}
-						<?php } ?>
+                #social_mobile {
+                    display: inline !important;
+                }
 
-			</style>
-			<div id="social_mobile"><div class="top-left">
-			<?php
-                if (trim(get_option('facebook')) == 1) { ?>
-			<a class="facebook pop-upper" href="https://www.facebook.com/<?php
-                    echo get_option('profile_id'); ?>" target="_blank"><i class="fa fa-facebook"></i></a>
-			<?php
-                    }
+                #social_mobile a {
+                    position: relative;
+                    float: left;
+                    width: calc(100% / <?php
+                                        echo $sum; ?>);
+                    display: list-item;
+                    list-style-type: none;
+                }
 
-        if (trim(get_option('twitter')) == 1) { ?>
-			<a class="twitter pop-upper" href="https://twitter.com/<?php
-                    echo get_option('twitter_login'); ?>" target="_blank"><i class="fa fa-twitter"></i></a>
-			<?php
-                    } ?>
-			</div></div>
-			<?php
-    }
-
-    // ______________________DESKTOP________________________ ?> <div class="social_slider" style="top: 10vh;"> <?php
-        if (trim(get_option('facebook')) == 1) { ?>
-									<input id="tab1" type="radio" name="tabs" checked />
-									<label for="tab1" class="facebook_icon"  style="max-width: 32px;"></label>
-									<section id="content1">
-										<div class="facebook_box">
-											<div id="fb-root"></div>
-												<script>(function(d, s, id) {
-												  var js, fjs = d.getElementsByTagName(s)[0];
-												  if (d.getElementById(id)) return;
-												  js = d.createElement(s); js.id = id;
-												  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1&autoLogAppEvents=1';
-												  fjs.parentNode.insertBefore(js, fjs);
-												}(document, 'script', 'facebook-jssdk'));</script>
-												<div class="fb-page" data-href="https://www.facebook.com/<?php
-                echo get_option('profile_id'); ?>" data-tabs="timeline" data-width="350" data-height="494" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="true"></div>
-												
-											 </div>
-								</section>
-			<?php
+                #social_mobile a:focus,
+                #social_mobile a:hover {
+                    width: calc(100% / <?php
+                                        echo $sum; ?>);
+                    -moz-transition-property: none;
+                    -webkit-transition-property: none;
+                    -o-transition-property: none;
+                    transition-property: none;
+                }
             }
 
-    if (trim(get_option('twitter')) == 1) {
-        ?>
-<input id="tab2" type="radio" name="tabs" />
-<label for="tab2" class="twitter_icon" style="max-width: 32px;<?php
-            if (trim(get_option('facebook')) == 0) { ?> top: 50px; right:32px;<?php
-                } else {
-                } ?>"></label>
-<?php
-            if (trim(get_option('facebook')) == 1) { ?>
-	<section id="content2">
-<?php
-                } else { ?><section id="content2" style="display: block;"> <?php
+            <?php if (trim(get_option('border-radius')) == 1) { ?>.social_slider .facebook_icon,
+            .social_slider .twitter_icon {
+                border-radius: 5px 0 0 5px !important;
+            }
+
+            <?php } ?>
+        </style>
+        <div id="social_mobile">
+            <div class="top-left">
+                <?php
+                if (trim(get_option('facebook')) == 1) { ?>
+                    <a class="facebook pop-upper" href="<?php echo $fb_url; ?>" target="_blank"><i class="fa fa-facebook"></i></a>
+                <?php
+                }
+
+                if (trim(get_option('twitter')) == 1) { ?>
+                    <a class="twitter pop-upper" href="https://twitter.com/<?php echo get_option('twitter_login'); ?>" target="_blank"><i class="fa fa-twitter"></i></a>
+                <?php
                 } ?>
+            </div>
+        </div>
+    <?php
+    }
+    ?>
+     <div class="social_slider" style="top: 10vh;"> <?php
+          if (trim(get_option('facebook')) == 1) { ?>
+            <input id="tab1" type="radio" name="tabs" checked />
+            <label for="tab1" class="facebook_icon" style="max-width: 32px;"></label>
+            <section id="content1">
+                <div class="facebook_box">
+                    <div id="fb-root"></div>
+                    <script>
+                        (function(d, s, id) {
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (d.getElementById(id)) return;
+                            js = d.createElement(s);
+                            js.id = id;
+                            js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1&autoLogAppEvents=1';
+                            fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));
+                    </script>
+                    <div class="fb-page" data-href="https://www.facebook.com/<?php
+                                                                                                                    echo get_option('profile_id'); ?>" data-tabs="timeline" data-width="350" data-height="494" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="true"></div>
 
-<div class="twitter_box">
-<a class="twitter-timeline" data-width="350" data-height="494" href="https://twitter.com/<?php
-            echo get_option('twitter_login'); ?>">Tweets by <?php
-            echo get_option('twitter_login'); ?></a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-			 </div></section>
-	<?php
-    } ?>
-			</div>
-			<span class="copyrightlink">Designed with <span style="color: #f44336;">❤</span> by <a title="Projektowanie stron internetowych" target="_blank" href="http://jakubskowronski.com" rel="noopener noreferrer">jakubskowronski.com</a></span>
+                </div>
+            </section>
+        <?php
+                                                                                                                }
 
-			<?php
+                                                                                                                if (trim(get_option('twitter')) == 1) {
+        ?>
+            <input id="tab2" type="radio" name="tabs" />
+            <label for="tab2" class="twitter_icon" style="max-width: 32px;<?php
+                                                                                                                    if (trim(get_option('facebook')) == 0) { ?> top: 50px; right:32px;<?php
+                                                                                                                    } else {
+                                                                                                                    } ?>"></label>
+            <?php
+                                                                                                                    if (trim(get_option('facebook')) == 1) { ?>
+                <section id="content2">
+                <?php
+                                                                                                                    } else { ?><section id="content2" style="display: block;"> <?php
+                                                                                                                    } ?>
+
+                    <div class="twitter_box">
+                        <a class="twitter-timeline" data-width="350" data-height="494" href="https://twitter.com/<?php
+                                                                                                                    echo get_option('twitter_login'); ?>">Tweets by <?php
+                                                                                                                    echo get_option('twitter_login'); ?></a>
+                        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
+                    </section>
+                
+            <span class="copyrightlink">Designed with <span style="color: #f44336;">❤</span> by <a title="Projektowanie stron internetowych" target="_blank" href="http://jakubskowronski.com" rel="noopener noreferrer">jakubskowronski.com</a></span>
+         <?php  } ?>
+    </div>
+
+<?php
 }
 
 add_action('admin_init', 'jsftrwlikebox_settings');
@@ -238,23 +256,23 @@ function jsftrwlikebox_opcje()
     foreach ($lbox_opcje as $opcja) {
         echo '<tr valign="top"><th scope="row">' . $opcja['label'] . '</th><td>';
         switch ($opcja['typ']) {
-        case 'text':
-            echo '<input type="text" name="' . $opcja['nazwa'] . '" value="' . get_option($opcja['nazwa']) . '" />';
-            break;
+            case 'text':
+                echo '<input type="text" name="' . $opcja['nazwa'] . '" value="' . get_option($opcja['nazwa']) . '" />';
+                break;
 
-        case 'textarea':
-            echo '<textarea cols="30" rows="5" name="' . $opcja['nazwa'] . '">' . get_option($opcja['nazwa']) . '</textarea>';
-            break;
+            case 'textarea':
+                echo '<textarea cols="30" rows="5" name="' . $opcja['nazwa'] . '">' . get_option($opcja['nazwa']) . '</textarea>';
+                break;
 
-        case 'radio':
-            echo '<select name="' . $opcja['nazwa'] . '">';
-            foreach ($opcja['options'] as $optionn => $optionv) {
-                echo '<option value="' . $optionn . '" ' . (($optionn == get_option($opcja['nazwa'])) ? ' selected="selected"' : '') . '>' . $optionv . '</option>';
-            }
+            case 'radio':
+                echo '<select name="' . $opcja['nazwa'] . '">';
+                foreach ($opcja['options'] as $optionn => $optionv) {
+                    echo '<option value="' . $optionn . '" ' . (($optionn == get_option($opcja['nazwa'])) ? ' selected="selected"' : '') . '>' . $optionv . '</option>';
+                }
 
-            echo '</select>';
-            break;
-            }
+                echo '</select>';
+                break;
+        }
 
         echo '</td></tr>';
     }
