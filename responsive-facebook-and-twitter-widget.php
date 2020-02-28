@@ -1,12 +1,12 @@
 <?php
 
 /*
-Plugin Name: Resonsive Like Box Wiget
+Plugin Name: Responsive Social Slider Wiget
 Description: Display Facebook and Twitter on your website in beautiful responsive box which slides in from page edge in a handy way!
 Plugin URI: https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.3.0
+Version: 1.3.1
 License: GPLv2 or later
 */
 
