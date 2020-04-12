@@ -64,25 +64,28 @@ add_action('wp_footer', 'widgetFrontend');
 
 function widgetFrontend()
 {
-    if (trim(get_option('show_on_mobile')) == 1) 
+    if ( trim(get_option('show_on_mobile') ) == 1 ) 
     {
         ?>
         <div class="social_mobile">
             <div class="top-left">
             <?php
                 $sum = 0;
-                if (!empty(get_option('facebook_id')))
+                if ( !empty(get_option('facebook_id')) )
                 {
                     $sum++;
                     $iPhone  = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
                     $iPad    = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
                     $Android = stripos($_SERVER['HTTP_USER_AGENT'], "Android");
 
-                    if ($iPhone || $iPad) 
+                    if ( $iPhone || $iPad ) 
                     {
                         $fb_url = 'fb://profile/' . get_option('facebook_id');
-                    } else if ($Android) {
-                        $fb_url = 'fb://page/' . get_option('facebook_id');
+                    } else  {
+                        if ( $Android ) 
+                        {
+                            $fb_url = 'fb://page/' . get_option('facebook_id');
+                        }
                     }
                         ?>
                         <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
@@ -90,7 +93,7 @@ function widgetFrontend()
                         </a>
                         <?php 
                 }
-                if (!empty(get_option('twitter_id')))
+                if ( !empty(get_option('twitter_id')) )
                 {
                     $sum++;
                     ?>
@@ -107,7 +110,7 @@ function widgetFrontend()
     ?>
     <div class="social_slider" style="top: 10vh;"> 
     <?php
-        if (!empty(get_option('facebook_id'))) 
+        if ( !empty(get_option('facebook_id')) ) 
         { 
             ?>
             <input id="tabOne" type="radio" name="tabs" checked />
@@ -121,7 +124,7 @@ function widgetFrontend()
             <?php
         }
 
-        if (!empty(get_option('twitter_id'))) 
+        if ( !empty(get_option('twitter_id')) ) 
         {
             ?>
             <input id="tabTwo" type="radio" name="tabs" />
@@ -138,13 +141,13 @@ function widgetFrontend()
     </div>
     <style>
     <?php
-        if (trim(get_option('show_on_mobile')) == 1) 
+        if ( trim(get_option('show_on_mobile') ) == 1 ) 
         {
             ?>
             .social_mobile a, .social_mobile a:focus, .social_mobile a:hover { width: calc(100% / <?php echo $sum ?>);}
             <?php
         }
-        if (trim(get_option('border-radius')) == 1) 
+        if ( trim(get_option('border-radius') ) == 1 ) 
         { 
             ?>
             .social_slider .facebook_icon, .social_slider .twitter_icon { border-radius: 5px 0 0 5px !important;}
@@ -160,7 +163,7 @@ add_action('admin_init', 'widgetOptions');
 function widgetOptions()
 {
     global $widget_settings;
-    foreach ($widget_settings as $setting) 
+    foreach ( $widget_settings as $setting ) 
     {
         add_option($setting['id'], $setting['default']);
         register_setting('setting-fields', $setting['id']);
@@ -177,9 +180,9 @@ function widgetMenu()
 function widgetBackend()
 {
     global $widget_settings;
-    if ($_POST) 
+    if ( $_POST ) 
     {
-        foreach ($widget_settings as $setting) 
+        foreach ( $widget_settings as $setting ) 
         {
             $save_setting = sanitize_text_field($_POST[$setting['id']]);
             update_option($setting['id'], $save_setting);
@@ -192,10 +195,10 @@ function widgetBackend()
         do_settings_sections('responsive-facebook-and-twitter-widget');
         echo '<h3>Follow these steps to find your Facebook & Twitter ID: <a href="https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget" target="_blank">Tutorial</a></h3>
         <table class="form-table">';
-            foreach ($widget_settings as $setting) 
+            foreach ( $widget_settings as $setting ) 
             {
                 echo '<tr valign="top"><th scope="row">' . $setting['label'] . '</th><td>';
-                switch ($setting['type']) 
+                switch ( $setting['type'] ) 
                 {
                     case 'text':
                         echo '<input type="text" name="' . $setting['id'] . '" value="' . get_option($setting['id']) . '" />';

@@ -7,7 +7,7 @@
  .social_slider {
    width: 370px;
    position: fixed;
-   z-index: 999;
+   z-index: 9999;
    box-sizing: content-box;
    transition: all 0.5s 0.2s;
  }
@@ -84,7 +84,7 @@ ocial_slider a:hover {
  }
  .social_slider .facebook_icon {
    width: 32px;
-   height: 115px;
+   padding: 0;
    cursor: pointer;
    position: relative;
    z-index: 99998;
@@ -102,7 +102,7 @@ ocial_slider a:hover {
  }
  .social_slider .twitter_icon {
    width: 32px;
-   height: 115px;
+   padding: 0;
    cursor: pointer;
    position: relative;
    z-index: 99998;
