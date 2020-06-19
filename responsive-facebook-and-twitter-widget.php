@@ -1,12 +1,12 @@
 <?php
 
 /*
-Plugin Name: Responsive Social Slider Wiget
+Plugin Name: Responsive Social Slider Widget
 Description: Display Facebook and Twitter on your website in beautiful responsive box which slides in from page edge in a handy way!
 Plugin URI: https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.3.2
+Version: 1.3.5
 License: GPLv2 or later
 */
 
@@ -49,6 +49,17 @@ $widget_settings = array(
         'label' => 'Twitter ID',
         'desc' => 'Twitter account ID'
     ),
+    array(
+        'id' => 'fa-cdn',
+        'type' => 'radio',
+        'default' => '1',
+        'label' => 'Load Font Awesome library',
+        'desc' => 'Set to YES if icons missing',
+        'options' => array(
+            0 => 'No',
+            1 => 'Yes'
+        )
+    )
 );
 
 add_action('wp_head', 'widgetScripts');
@@ -57,7 +68,10 @@ add_action('wp_enqueue_scripts', 'widgetScripts');
 function widgetScripts()
 {
     wp_enqueue_style('style', plugin_dir_url(__FILE__) . 'css/style.min.css');
-    wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+    if ( trim(get_option('fa-cdn') ) == 1 ) 
+    {
+        wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+    }
 }
 
 add_action('wp_footer', 'widgetFrontend');
@@ -158,24 +172,25 @@ function widgetFrontend()
     <?php
 }
 
-add_action('admin_init', 'widgetOptions');
 
-function widgetOptions()
-{
-    global $widget_settings;
-    foreach ( $widget_settings as $setting ) 
-    {
-        add_option($setting['id'], $setting['default']);
-        register_setting('setting-fields', $setting['id']);
-    }
-}
 
 add_action('admin_menu', 'widgetMenu');
 
 function widgetMenu()
 {
-    add_plugins_page('Responsive Facebook and Twitter Widget', 'Responsive Facebook and Twitter Widget', 'manage_options', 'responsive-facebook-and-twitter-widget', 'widgetBackend');
+    add_options_page('Responsive Social Slider Widget', 'Responsive Social Slider Widget', 'manage_options', 'responsive-facebook-and-twitter-widget', 'widgetBackend');
 }
+
+function filter_action_links( $links ) {
+    $links['settings'] = '<a href="' . admin_url( '/options-general.php?page=responsive-facebook-and-twitter-widget' ) . '">' . __( 'Settings' ) . '</a>';
+    $links['support'] = '<a href="https://m.me/JSNetworkSolutions" target="_blank">' . __( 'Support' ) . '</a>';
+    // if( class_exists( 'CT_DB_Pro_Admin' ) ) {
+    //  $links['upgrade'] = '<a href="https://discussionboard.pro">' . __( 'Upgrade', 'wp-discussion-board' ) . '</a>';
+    // }
+    return $links;
+   }
+   
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ),'filter_action_links', 10, 2 );
 
 function widgetBackend()
 {
@@ -187,13 +202,13 @@ function widgetBackend()
             $save_setting = sanitize_text_field($_POST[$setting['id']]);
             update_option($setting['id'], $save_setting);
         }
-        echo '<div class="updated"><p><strong>' . __('Options saved.') . '</strong></p></div>';
+        echo '<div class="updated fade"><p><strong>' . __('Settings saved.') . '</strong></p></div>';
     }
 
     echo '<form method="post">';
         settings_fields('setting-fields');
         do_settings_sections('responsive-facebook-and-twitter-widget');
-        echo '<h3>Follow these steps to find your Facebook & Twitter ID: <a href="https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget" target="_blank">Tutorial</a></h3>
+        echo '<h1>' . get_admin_page_title() . '</h1></ br><h3>Follow these steps to find your Facebook & Twitter ID: <a href="https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget" target="_blank">Tutorial</a></h3>
         <table class="form-table">';
             foreach ( $widget_settings as $setting ) 
             {
