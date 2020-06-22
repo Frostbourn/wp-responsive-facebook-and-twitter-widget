@@ -52,7 +52,7 @@ $widget_settings = array(
     array(
         'id' => 'fa-cdn',
         'type' => 'radio',
-        'default' => '1',
+        'default' => '0',
         'label' => 'Load Font Awesome library',
         'desc' => 'Set to YES if icons missing',
         'options' => array(
