@@ -184,9 +184,7 @@ function widgetMenu()
 function filter_action_links( $links ) {
     $links['settings'] = '<a href="' . admin_url( '/options-general.php?page=responsive-facebook-and-twitter-widget' ) . '">' . __( 'Settings' ) . '</a>';
     $links['support'] = '<a href="https://m.me/JSNetworkSolutions" target="_blank">' . __( 'Support' ) . '</a>';
-    // if( class_exists( 'CT_DB_Pro_Admin' ) ) {
-    //  $links['upgrade'] = '<a href="https://discussionboard.pro">' . __( 'Upgrade', 'wp-discussion-board' ) . '</a>';
-    // }
+    $links['upgrade'] = '<a href="https://jsns.eu">' . __( 'PRO' ) . '</a>';
     return $links;
    }
    
