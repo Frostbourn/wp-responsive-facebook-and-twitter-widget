@@ -27,7 +27,7 @@
     transition: all .5s .2s;
     transform: translateX(-370px);
 }
-ocial_slider a:hover {
+.social_slider a:hover {
    background-color: transparent;
    text-decoration: none;
  }
@@ -76,6 +76,7 @@ ocial_slider a:hover {
  .social_slider i {
    display: flex;
    justify-content: center;
+   bottom: 0;
    padding: 20%;
    color: #fff;
    position: relative;
