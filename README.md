@@ -16,6 +16,9 @@ The visitors can enjoy our plugin on any screen, including Tablets and Mobile De
 * All browsers working
 * Super easy to install and configure
 
+### This is the development area
+To download the full Joomla installation file in zip format, visit:  
+[https://wordpress.org](https://wordpress.org/plugins/responsive-facebook-and-twitter-widget/)
 
 ## Configuration
 
