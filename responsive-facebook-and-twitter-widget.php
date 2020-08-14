@@ -94,9 +94,9 @@ function widgetFrontend()
 
                     if ( $iPhone || $iPad || $Android) 
                     {
-                        $fb_url = 'fb://facewebmodal/f?href=https://www.facebook.com/' . echo get_option('facebook_id');
+                        $fb_url = 'fb://facewebmodal/f?href=https://www.facebook.com/' . get_option('facebook_id');
                     } else  {
-                        $fb_url = 'https://facebook.com/' . echo get_option('facebook_id');
+                        $fb_url = 'https://facebook.com/' . get_option('facebook_id');
                     }
                         ?>
                         <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
