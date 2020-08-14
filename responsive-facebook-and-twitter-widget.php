@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.3.8
+Version: 1.3.9
 License: GPLv2 or later
 */
 
@@ -88,11 +88,21 @@ function widgetFrontend()
                 if ( !empty(get_option('facebook_id')) )
                 {
                     $sum++;
-                    ?>
-                    <a class="facebook" href="fb://facewebmodal/f?href=https://www.facebook.com/<?php echo  get_option('facebook_id') ?>" target="_blank">
-                        <i class="fa fa-facebook-f"></i>
-                    </a>
-                    <?php 
+                    $iPhone  = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
+                    $iPad    = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
+                    $Android = stripos($_SERVER['HTTP_USER_AGENT'], "Android");
+
+                    if ( $iPhone || $iPad || $Android) 
+                    {
+                        $fb_url = 'fb://facewebmodal/f?href=https://www.facebook.com/' . echo get_option('facebook_id');
+                    } else  {
+                        $fb_url = 'https://facebook.com/' . echo get_option('facebook_id');
+                    }
+                        ?>
+                        <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
+                            <i class="fa fa-facebook-f"></i>
+                        </a>
+                        <?php 
                 }
                 if ( !empty(get_option('twitter_id')) )
                 {
@@ -165,7 +175,8 @@ add_action('admin_menu', 'widgetMenu');
 
 function widgetMenu()
 {
-    add_options_page('Responsive Social Slider Widget', 'Responsive Social Slider Widget', 'manage_options', 'responsive-facebook-and-twitter-widget', 'widgetBackend');
+    add_options_page('Responsive Social 
+     Widget', 'Responsive Social Slider Widget', 'manage_options', 'responsive-facebook-and-twitter-widget', 'widgetBackend');
 }
 
 function filter_action_links( $links ) {
