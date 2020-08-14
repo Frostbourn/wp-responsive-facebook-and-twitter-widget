@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.3.6
+Version: 1.3.7
 License: GPLv2 or later
 */
 
@@ -88,24 +88,11 @@ function widgetFrontend()
                 if ( !empty(get_option('facebook_id')) )
                 {
                     $sum++;
-                    $iPhone  = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
-                    $iPad    = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
-                    $Android = stripos($_SERVER['HTTP_USER_AGENT'], "Android");
-
-                    if ( $iPhone || $iPad ) 
-                    {
-                        $fb_url = 'fb://profile/' . get_option('facebook_id');
-                    } else  {
-                        if ( $Android ) 
-                        {
-                            $fb_url = 'fb://page/' . get_option('facebook_id');
-                        }
-                    }
-                        ?>
-                        <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
-                            <i class="fa fa-facebook-f"></i>
-                        </a>
-                        <?php 
+                    ?>
+                    <a class="facebook" href="fb://facewebmodal/f?href=https://www.facebook.com/<?php get_option('facebook_id') ?>" target="_blank">
+                        <i class="fa fa-facebook-f"></i>
+                    </a>
+                    <?php 
                 }
                 if ( !empty(get_option('twitter_id')) )
                 {
