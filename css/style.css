@@ -52,7 +52,7 @@
  .social_slider #tabTwo:checked ~ label ~ #contentTwo {
    display: block;
  }
- .social_slider label {
+ .social_slider label {  
    overflow: hidden;
    box-shadow: 0 0 20px -7px #000;
  }
