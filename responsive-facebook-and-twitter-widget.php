@@ -70,7 +70,7 @@ function widgetScripts()
     wp_enqueue_style('style', plugin_dir_url(__FILE__) . 'css/style.min.css');
     if ( trim(get_option('fa-cdn') ) == 1 ) 
     {
-        wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+        wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css');
     }
 }
 
@@ -100,7 +100,7 @@ function widgetFrontend()
                     }
                         ?>
                         <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
-                            <i class="fa fa-facebook-f"></i>
+                            <i class="fab fa-facebook-f"></i>
                         </a>
                         <?php 
                 }
@@ -109,7 +109,7 @@ function widgetFrontend()
                     $sum++;
                     ?>
                     <a class="twitter" href="https://twitter.com/<?php echo  get_option('twitter_id') ?>" target="_blank">
-                        <i class="fa fa-twitter"></i>
+                        <i class="fab fa-twitter"></i>
                     </a>
                     <?php 
                 }
@@ -125,7 +125,7 @@ function widgetFrontend()
         { 
             ?>
             <input id="tabOne" type="radio" name="tabs" checked />
-            <label for="tabOne" class="facebook_icon" style="max-width: 32px;"><span>facebook</span><i class="fa fa-facebook-f"></i></label>
+            <label for="tabOne" class="facebook_icon" style="max-width: 32px;"><span>facebook</span><i class="fab fa-facebook-f"></i></label>
             <section id="contentOne">
                 <div class="facebook_box">
                     <iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/<?php echo get_option('facebook_id'); ?>&tabs=timeline,events,messages&width=350&height=490&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=true" width="350" height="490" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true">
@@ -139,7 +139,7 @@ function widgetFrontend()
         {
             ?>
             <input id="tabTwo" type="radio" name="tabs" />
-            <label for="tabTwo" class="twitter_icon" style="max-width: 32px;"><span>twitter</span><i class="fa fa-twitter"></i></label>
+            <label for="tabTwo" class="twitter_icon" style="max-width: 32px;"><span>twitter</span><i class="fab fa-twitter"></i></label>
             <section id="contentTwo">
                 <div class="twitter_box">
                     <a class="twitter-timeline" data-width="350" data-height="490" href="https://twitter.com/<?php echo get_option('twitter_id'); ?>">Tweets by <?php echo get_option('twitter_id'); ?></a>
