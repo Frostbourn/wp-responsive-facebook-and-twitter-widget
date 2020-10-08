@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.3.9
+Version: 1.4.0
 License: GPLv2 or later
 */
 
@@ -81,9 +81,9 @@ function widgetFrontend()
     if ( trim(get_option('show_on_mobile') ) == 1 ) 
     {
         ?>
-        <div class="social_mobile">
-            <div class="top-left">
-            <?php
+<div class="social_mobile">
+    <div class="top-left">
+        <?php
                 $sum = 0;
                 if ( !empty(get_option('facebook_id')) )
                 {
@@ -99,74 +99,89 @@ function widgetFrontend()
                         $fb_url = 'https://facebook.com/' . get_option('facebook_id');
                     }
                         ?>
-                        <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <?php 
+        <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <?php 
                 }
                 if ( !empty(get_option('twitter_id')) )
                 {
                     $sum++;
                     ?>
-                    <a class="twitter" href="https://twitter.com/<?php echo  get_option('twitter_id') ?>" target="_blank">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <?php 
+        <a class="twitter" href="https://twitter.com/<?php echo  get_option('twitter_id') ?>" target="_blank">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <?php 
                 }
             ?>
-            </div>
-        </div>
-        <?php
+    </div>
+</div>
+<?php
     }
     ?>
-    <div class="social_slider" style="top: 10vh;"> 
+<div class="social_slider" style="top: 10vh;">
     <?php
         if ( !empty(get_option('facebook_id')) ) 
         { 
             ?>
-            <input id="tabOne" type="radio" name="tabs" checked />
-            <label for="tabOne" class="facebook_icon" style="max-width: 32px;"><span>facebook</span><i class="fab fa-facebook-f"></i></label>
-            <section id="contentOne">
-                <div class="facebook_box">
-                    <iframe src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/<?php echo get_option('facebook_id'); ?>&tabs=timeline,events,messages&width=350&height=490&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=true" width="350" height="490" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true">
-                    </iframe>
-                </div>
-            </section>
-            <?php
+    <input id="tabOne" type="radio" name="tabs" checked />
+    <label for="tabOne" class="facebook_icon" style="max-width: 32px;"><span>facebook</span><i
+            class="fab fa-facebook-f"></i></label>
+    <section id="contentOne">
+        <div class="facebook_box">
+            <iframe
+                src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/<?php echo get_option('facebook_id'); ?>&tabs=timeline,events,messages&width=350&height=490&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=true"
+                width="350" height="490" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                allowTransparency="true">
+            </iframe>
+        </div>
+    </section>
+    <?php
         }
 
         if ( !empty(get_option('twitter_id')) ) 
         {
             ?>
-            <input id="tabTwo" type="radio" name="tabs" />
-            <label for="tabTwo" class="twitter_icon" style="max-width: 32px;"><span>twitter</span><i class="fab fa-twitter"></i></label>
-            <section id="contentTwo">
-                <div class="twitter_box">
-                    <a class="twitter-timeline" data-width="350" data-height="490" href="https://twitter.com/<?php echo get_option('twitter_id'); ?>">Tweets by <?php echo get_option('twitter_id'); ?></a>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                </div>
-            </section>
-            <?php  
+    <input id="tabTwo" type="radio" name="tabs" />
+    <label for="tabTwo" class="twitter_icon" style="max-width: 32px;"><span>twitter</span><i
+            class="fab fa-twitter"></i></label>
+    <section id="contentTwo">
+        <div class="twitter_box">
+            <a class="twitter-timeline" data-width="350" data-height="490"
+                href="https://twitter.com/<?php echo get_option('twitter_id'); ?>">Tweets by
+                <?php echo get_option('twitter_id'); ?></a>
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+    </section>
+    <?php  
         } 
     ?>
-    </div>
-    <style>
+</div>
+<style>
+<?php if (trim(get_option('show_on_mobile'))==1) {
+
+    ?>.social_mobile a,
+    .social_mobile a:focus,
+    .social_mobile a:hover {
+        width: calc(100% / <?php echo $sum ?>);
+    }
+
     <?php
-        if ( trim(get_option('show_on_mobile') ) == 1 ) 
-        {
-            ?>
-            .social_mobile a, .social_mobile a:focus, .social_mobile a:hover { width: calc(100% / <?php echo $sum ?>);}
-            <?php
-        }
-        if ( trim(get_option('border-radius') ) == 1 ) 
-        { 
-            ?>
-            .social_slider .facebook_icon, .social_slider .twitter_icon { border-radius: 5px 0 0 5px !important;}
-            <?php 
-        } 
-    ?>
-    </style>
+}
+
+if (trim(get_option('border-radius'))==1) {
+
+    ?>.social_slider .facebook_icon,
+    .social_slider .twitter_icon {
+        border-radius: 5px 0 0 5px !important;
+    }
+
     <?php
+}
+
+?>
+</style>
+<?php
 }
 
 
@@ -182,7 +197,7 @@ function widgetMenu()
 function filter_action_links( $links ) {
     $links['settings'] = '<a href="' . admin_url( '/options-general.php?page=responsive-facebook-and-twitter-widget' ) . '">' . __( 'Settings' ) . '</a>';
     $links['support'] = '<a href="https://m.me/JSNetworkSolutions" target="_blank">' . __( 'Support' ) . '</a>';
-    $links['upgrade'] = '<a href="https://jsns.eu">' . __( 'PRO' ) . '</a>';
+    $links['upgrade'] = '<a href="https://jsns.eu/extensions/js-like-box-slider" target="_blank">' . __( 'PRO' ) . '</a>';
     return $links;
    }
    
