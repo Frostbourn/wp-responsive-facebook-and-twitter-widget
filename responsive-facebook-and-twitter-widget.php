@@ -94,14 +94,14 @@ function widgetFrontend()
         
                     if ( $iPhone || $iPad ) 
                     {
-                        $fb_url = 'fb://profile/' . $facebook_id;
+                        $fb_url = 'fb://profile/' . get_option('facebook_id');
                     } 
                     else if ( $Android ) {
-                        $fb_url = 'fb://page/' . $facebook_id;
+                        $fb_url = 'fb://page/' . get_option('facebook_id');
                     }
                     else 
                     {
-                        $fb_url = 'https://facebook.com/' . $facebook_id;
+                        $fb_url = 'https://facebook.com/' . get_option('facebook_id');
                     }
                         ?>
         <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
