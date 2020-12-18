@@ -1,6 +1,6 @@
 # Responsive Social Slider Widget for Wordpress
 
-Take a look at the [demo](https://jakubskowronski.com/wordpress/).
+Take a look at the [demo](https://jsns.eu).
 
 #### Version: 1.4.1
 
