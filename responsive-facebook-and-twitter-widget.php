@@ -3,18 +3,62 @@
 /*
 Plugin Name: Responsive Social Slider Widget
 Description: Display Facebook and Twitter on your website in beautiful responsive box which slides in from page edge in a handy way!
-Plugin URI: https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget
+Plugin URI: https://jsns.eu
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.4.1
+Version: 1.5.0
 License: GPLv2 or later
+@fs_premium_only /js/
 */
 
-defined('ABSPATH') or die('No script kiddies please!');
+if ( ! function_exists( 'rfatw_fs' ) ) {
+    // Create a helper function for easy SDK access.
+    function rfatw_fs() {
+        global $rfatw_fs;
 
-$widget_settings = array(
+        if ( ! isset( $rfatw_fs ) ) {
+            // Include Freemius SDK.
+            require_once dirname(__FILE__) . '/freemius/start.php';
+
+            $rfatw_fs = fs_dynamic_init( array(
+                'id'                  => '7477',
+                'slug'                => 'responsive-facebook-and-twitter-widget',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_b79816fce1978b98b4ced585cb173',
+                'is_premium'          => true,
+                'premium_suffix'      => 'Proffesional',
+                'has_premium_version' => true,
+                'has_addons'          => false,
+                'has_paid_plans'      => true,
+                'trial'               => array(
+                    'days'               => 7,
+                    'is_require_payment' => false,
+                ),
+                'menu'                => array(
+                    'slug'           => 'responsive-facebook-and-twitter-widget',
+                    'support'        => false,
+                    'parent'         => array(
+                        'slug' => 'options-general.php',
+                    ),
+                ),
+            ) );
+        }
+
+        return $rfatw_fs;
+    }
+
+    // Init Freemius.
+    rfatw_fs();
+    // Signal that SDK was initiated.
+    do_action( 'rfatw_fs_loaded' );
+}
+
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+
+if ( rfatw_fs()->can_use_premium_code__premium_only() ) {
+$widgetSettings = array(
     array(
-        'id' => 'show_on_mobile',
+        'id' => 'show_on_mobile_devices',
         'type' => 'radio',
         'default' => '1',
         'label' => 'Show on mobile devices',
@@ -22,6 +66,17 @@ $widget_settings = array(
         'options' => array(
             0 => 'No',
             1 => 'Yes'
+        )
+    ),
+    array(
+        'id' => 'position',
+        'type' => 'radio',
+        'default' => '1',
+        'label' => 'Position',
+        'desc' => 'Position of the sidebar',
+        'options' => array(
+            0 => 'Right',
+            1 => 'Left'
         )
     ),
     array(
@@ -36,63 +91,224 @@ $widget_settings = array(
         )
     ),
     array(
-        'id' => 'facebook_id',
+        'id' => 'buttons-label',
+        'type' => 'radio',
+        'default' => '1',
+        'label' => 'Show button label',
+        'desc' => '',
+        'options' => array(
+            0 => 'No',
+            1 => 'Yes'
+        )
+    ),
+    array(
+        'id' => 'fa-cdn',
+        'type' => 'radio',
+        'default' => '1',
+        'label' => 'Load Font Awesome library (Set to YES if any icons missing)',
+        'desc' => 'Set to YES if any icons missing',
+        'options' => array(
+            0 => 'No',
+            1 => 'Yes'
+        )
+    ),
+    array(
+        'id' => 'ids_separator',
+        'type' => 'separator_ids',
+        'default' => '',
+        'label' => 'Social channels ID\'s',
+        'desc' => ''
+    ),
+    array(
+        'id' => 'facebookId',
         'type' => 'text',
         'default' => 'facebook',
         'label' => 'Facebook Page ID',
         'desc' => 'Facebook Page ID'
     ),
     array(
-        'id' => 'twitter_id',
+        'id' => 'twitterId',
         'type' => 'text',
         'default' => 'twitter',
         'label' => 'Twitter ID',
         'desc' => 'Twitter account ID'
     ),
     array(
-        'id' => 'fa-cdn',
-        'type' => 'radio',
-        'default' => '0',
-        'label' => 'Load Font Awesome library',
-        'desc' => 'Set to YES if icons missing',
-        'options' => array(
-            0 => 'No',
-            1 => 'Yes'
-        )
+        'id' => 'instagramId',
+        'type' => 'text',
+        'default' => 'instagram',
+        'label' => 'Instagram ID',
+        'desc' => 'Instagram account ID'
+    ),
+    array(
+        'id' => 'pinterestId',
+        'type' => 'text',
+        'default' => 'pinterest',
+        'label' => 'Pinterest ID',
+        'desc' => 'Pinterest account ID'
+    ),
+    array(
+        'id' => 'custom_separator',
+        'type' => 'separator_custom',
+        'default' => '',
+        'label' => 'Custom tab aperrance',
+        'desc' => ''
+    ),
+    array(
+        'id' => 'custom_color',
+        'type' => 'text',
+        'default' => '#d3d3d3',
+        'label' => 'Custom tab HEX color code',
+        'desc' => 'Custom tab color'
+    ),
+    array(
+        'id' => 'custom_text',
+        'type' => 'text',
+        'default' => 'spotify',
+        'label' => 'Custom tab icon text',
+        'desc' => 'Custom tab icon text'
+    ),
+    array(
+        'id' => 'custom_icon',
+        'type' => 'text',
+        'default' => 'fa fa-spotify',
+        'label' => 'Custom tab icon',
+        'desc' => 'Custom tab icon. Use only Font Awesome'
+    ),
+    array(
+        'id' => 'custom_url',
+        'type' => 'text',
+        'default' => '',
+        'label' => 'Mobile Custom button URL',
+        'desc' => ''
+    ),
+    array(
+        'id' => 'custom_html',
+        'type' => 'html',
+        'default' => '',
+        'label' => 'HTML here',
+        'desc' => ''
     )
 );
+}
+else {
+    $widgetSettings = array(
+        array(
+            'id' => 'show_on_mobile_devices',
+            'type' => 'radio',
+            'default' => '1',
+            'label' => 'Show on mobile devices',
+            'desc' => 'Display Facebook tab on mobile devices',
+            'options' => array(
+                0 => 'No',
+                1 => 'Yes'
+            )
+        ),
+        array(
+            'id' => 'position',
+            'type' => 'radio',
+            'default' => '1',
+            'label' => 'Position',
+            'desc' => 'Position of the sidebar',
+            'options' => array(
+                0 => 'Right',
+                1 => 'Left'
+            )
+        ),
+        array(
+            'id' => 'border-radius',
+            'type' => 'radio',
+            'default' => '1',
+            'label' => 'Rounded icons',
+            'desc' => 'Change the border radius of the icons',
+            'options' => array(
+                0 => 'No',
+                1 => 'Yes'
+            )
+        ),
+        array(
+            'id' => 'buttons-label',
+            'type' => 'radio',
+            'default' => '1',
+            'label' => 'Show button label',
+            'desc' => '',
+            'options' => array(
+                0 => 'No',
+                1 => 'Yes'
+            )
+        ),
+        array(
+            'id' => 'fa-cdn',
+            'type' => 'radio',
+            'default' => '1',
+            'label' => 'Load Font Awesome library (Set to YES if any icons missing)',
+            'desc' => 'Set to YES if any icons missing',
+            'options' => array(
+                0 => 'No',
+                1 => 'Yes'
+            )
+        ),
+        array(
+            'id' => 'ids_separator',
+            'type' => 'separator_ids',
+            'default' => '',
+            'label' => 'Social channels ID\'s',
+            'desc' => ''
+        ),
+        array(
+            'id' => 'facebookId',
+            'type' => 'text',
+            'default' => 'facebook',
+            'label' => 'Facebook Page ID',
+            'desc' => 'Facebook Page ID'
+        ),
+        array(
+            'id' => 'twitterId',
+            'type' => 'text',
+            'default' => 'twitter',
+            'label' => 'Twitter ID',
+            'desc' => 'Twitter account ID'
+        )
+    );
+}
 
-add_action('wp_head', 'widgetScripts');
-add_action('wp_enqueue_scripts', 'widgetScripts');
+add_action( 'wp_head', 'sliderScripts' );
+add_action( 'wp_enqueue_scripts', 'sliderScripts' );
 
-function widgetScripts()
+function sliderScripts()
 {
-    wp_enqueue_style('style', plugin_dir_url(__FILE__) . 'css/style.min.css');
+    wp_enqueue_style( 'social-widget-style', plugin_dir_url(__FILE__) . 'css/style.min.css' );
+
+    if ( rfatw_fs()->can_use_premium_code__premium_only() ) {
+        wp_enqueue_script( 'social-widget-axios', 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js', array(), false, true );
+        wp_enqueue_script( 'social-widget-script', plugin_dir_url(__FILE__) . 'js/script.js', array(), false, true  );
+    }
+
     if ( trim(get_option('fa-cdn') ) == 1 ) 
     {
-        wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css');
+        wp_enqueue_style( 'social-widget-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css' );
     }
 }
 
-add_action('wp_footer', 'widgetFrontend');
+add_action( 'wp_footer', 'sliderFrontend' );
 
-function widgetFrontend()
+function sliderFrontend()
 {
-    if ( trim(get_option('show_on_mobile') ) == 1 ) 
+    if ( trim(get_option('show_on_mobile_devices') ) == 1 ) 
     {
         ?>
-<div class="social_mobile">
+<div class="social_mobile_pro">
     <div class="top-left">
         <?php
                 $sum = 0;
-                if ( !empty(get_option('facebook_id')) )
+                if ( !empty(get_option('facebookId')) )
                 {
                     $sum++;
                     $iPhone  = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
                     $iPad    = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
                     $Android = stripos($_SERVER['HTTP_USER_AGENT'], "Android");
         
-                    if ( $iPhone || $iPad ) 
+                    if ($iPhone || $iPad ) 
                     {
                         $fb_url = 'fb://profile/' . get_option('facebook_id');
                     } 
@@ -103,40 +319,76 @@ function widgetFrontend()
                     {
                         $fb_url = 'https://facebook.com/' . get_option('facebook_id');
                     }
-                        ?>
+                    ?>
         <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
             <i class="fab fa-facebook-f"></i>
         </a>
         <?php 
                 }
-                if ( !empty(get_option('twitter_id')) )
+                if ( !empty(get_option('twitterId')) )
                 {
                     $sum++;
                     ?>
-        <a class="twitter" href="https://twitter.com/<?php echo  get_option('twitter_id') ?>" target="_blank">
+        <a class="twitter" href="https://twitter.com/<?php echo get_option( 'twitterId' ) ?>" target="_blank">
             <i class="fab fa-twitter"></i>
         </a>
         <?php 
                 }
+        if ( rfatw_fs()->can_use_premium_code__premium_only() ) {
+                if ( !empty(get_option('instagramId')) )
+                {
+                    $sum++;
+                    ?>
+        <a class="instagram" href="https://instagram.com/<?php echo get_option( 'instagramId' ) ?>" target="_blank">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <?php 
+                }
+                if ( !empty(get_option('pinterestId')) )
+                {
+                    $sum++;
+                    ?>
+        <a class="pinterest" href="<?php echo $pinterest_id ?>" target="_blank">
+            <i class="fab fa-pinterest-p"></i>
+        </a>
+        <?php 
+                }
+                if ( !empty(get_option('custom_html')) )
+                {
+                    $sum++;
+                    ?>
+        <a class="custom" href="<?php echo get_option( 'custom_url' ) ?>" target="_blank">
+            <i class="<?php echo get_option( 'custom_icon' ) ?>"></i>
+        </a>
+        <?php 
+                }
+            }
             ?>
     </div>
+    <style>
+    .social_mobile_pro a,
+    .social_mobile_pro a:focus,
+    .social_mobile_pro a:hover {
+        width: calc(100% / <?php echo $sum; ?>);
+    }
+    </style>
 </div>
 <?php
     }
     ?>
-<div class="social_slider" style="top: 10vh;">
+<div class="social_slider_pro">
     <?php
-        if ( !empty(get_option('facebook_id')) ) 
+        if ( !empty(get_option('facebookId')) ) 
         { 
             ?>
-    <input id="tabOne" type="radio" name="tabs" checked />
-    <label for="tabOne" class="facebook_icon" style="max-width: 32px;"><span>facebook</span><i
+    <input id="social_slider-tabOne" type="radio" name="tabs" checked />
+    <label for="social_slider-tabOne" class="facebook_icon"><span>facebook</span><i
             class="fab fa-facebook-f"></i></label>
-    <section id="contentOne">
+    <section id="social_slider-contentOne">
         <div class="facebook_box">
             <iframe
-                src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/<?php echo get_option('facebook_id'); ?>&tabs=timeline,events,messages&width=350&height=490&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=true"
-                width="350" height="490" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                src="https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/<?php echo get_option( 'facebookId' ); ?>&tabs=timeline,events,messages&width=350&height=1080&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=true"
+                width="350" height="1080" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
                 allowTransparency="true">
             </iframe>
         </div>
@@ -144,109 +396,317 @@ function widgetFrontend()
     <?php
         }
 
-        if ( !empty(get_option('twitter_id')) ) 
+        if ( !empty(get_option('twitterId')) ) 
         {
             ?>
-    <input id="tabTwo" type="radio" name="tabs" />
-    <label for="tabTwo" class="twitter_icon" style="max-width: 32px;"><span>twitter</span><i
-            class="fab fa-twitter"></i></label>
-    <section id="contentTwo">
+    <input id="social_slider-tabTwo" type="radio" name="tabs" />
+    <label for="social_slider-tabTwo" class="twitter_icon"><span>twitter</span><i class="fab fa-twitter"></i></label>
+    <section id="social_slider-contentTwo">
         <div class="twitter_box">
-            <a class="twitter-timeline" data-width="350" data-height="490"
-                href="https://twitter.com/<?php echo get_option('twitter_id'); ?>">Tweets by
-                <?php echo get_option('twitter_id'); ?></a>
+            <a class="twitter-timeline" data-width="350" data-height="1080"
+                href="https://twitter.com/<?php echo get_option( 'twitterId' ); ?>">Tweets by
+                <?php echo get_option('twitterId'); ?></a>
             <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
     </section>
     <?php  
         } 
+        if ( rfatw_fs()->can_use_premium_code__premium_only() ) {
+        if ( !empty(get_option('instagramId')) ) 
+        {
+            ?>
+    <input id="social_slider-tabThree" type="radio" name="tabs" />
+    <label for="social_slider-tabThree" class="instagram_icon"><span>instagram</span><i
+            class="fab fa-instagram"></i></label>
+    <section id="social_slider-contentThree">
+        <div class="instagram_box">
+            <div class="instagram-widget" data-user="<?php echo get_option( 'instagramId' ); ?>" data-header="yes"
+                data-color="#3897f0" data-columns="3"></div>
+        </div>
+    </section>
+    <?php  
+        } 
+        if ( !empty(get_option('pinterestId')) )
+        {
+            ?>
+    <script async defer src="//assets.pinterest.com/js/pinit.js"></script>
+    <input id="social_slider-tabFive" type="radio" name="tabs" />
+    <label for="social_slider-tabFive" class="pinterest_icon"><span>pinterest</span><i
+            class="fab fa-pinterest-p"></i></label>
+    <section id="social_slider-contentFive">
+        <div class="pinterest_box">
+            <a data-pin-do="embedUser" data-pin-board-width="360" data-pin-scale-height="1000" data-pin-scale-width="80"
+                href="https://pinterest.com/<?php echo get_option('pinterestId') ?>"></a>
+        </div>
+    </section>
+    <?php
+        }
+        if ( !empty(get_option('custom_html')) )
+        {
+            ?>
+    <input id="social_slider-tabFour" type="radio" name="tabs" />
+    <label for="social_slider-tabFour" class="custom_icon"><span><?php echo get_option('custom_text'); ?></span><i
+            class="<?php echo get_option('custom_icon'); ?>"></i></label>
+    <section id="social_slider-contentFour">
+        <div class="custom_box">
+            <?php
+                    echo html_entity_decode(get_option('custom_html') );
+                ?>
+        </div>
+    </section>
+    <?php
+        }
+    }
     ?>
 </div>
-<style>
-<?php if (trim(get_option('show_on_mobile'))==1) {
-
-    ?>.social_mobile a,
-    .social_mobile a:focus,
-    .social_mobile a:hover {
-        width: calc(100% / <?php echo $sum ?>);
-    }
-
-    <?php
-}
-
-if (trim(get_option('border-radius'))==1) {
-
-    ?>.social_slider .facebook_icon,
-    .social_slider .twitter_icon {
-        border-radius: 5px 0 0 5px !important;
-    }
-
-    <?php
-}
-
-?>
-</style>
 <?php
 }
 
+add_action('wp_head', 'slider_custom_styles', 100);
 
-
-add_action('admin_menu', 'widgetMenu');
-
-function widgetMenu()
+function slider_custom_styles()
 {
-    add_options_page('Responsive Social 
-     Widget', 'Responsive Social Slider Widget', 'manage_options', 'responsive-facebook-and-twitter-widget', 'widgetBackend');
+    ?>
+<style>
+<?php if (trim(get_option('show_on_mobile_devices'))==1) {
+    ?>.social_slider_pro label:first-of-type {
+        margin-top: 15vh;
+    }
+
+    .social_mobile_pro .custom {
+        background-color: <?php echo get_option('custom_color') ?>;
+    }
+
+    <?php
 }
 
-function filter_action_links( $links ) {
-    $links['settings'] = '<a href="' . admin_url( '/options-general.php?page=responsive-facebook-and-twitter-widget' ) . '">' . __( 'Settings' ) . '</a>';
-    $links['support'] = '<a href="https://m.me/JSNetworkSolutions" target="_blank">' . __( 'Support' ) . '</a>';
-    $links['upgrade'] = '<a href="https://jsns.eu/extensions/js-like-box-slider" target="_blank">' . __( 'PRO' ) . '</a>';
-    return $links;
-   }
-   
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ),'filter_action_links', 10, 2 );
+if (trim(get_option('buttons-label'))==0) {
+    ?>.social_slider_pro label {
+        width: 40px !important;
+        height: 40px !important;
+    }
 
-function widgetBackend()
+    .social_slider_pro label span {
+        display: none !important;
+    }
+
+    .social_slider_pro i {
+        width: 19px !important;
+        height: 21px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        color: #fff !important;
+        position: relative !important;
+        font-size: 18px !important;
+        background-color: unset !important;
+    }
+
+    .social_slider_pro .facebook_icon {
+        box-shadow: 0px 0px 28px rgb(0 0 0 / 38%), 0px 5px 0px #3487d2;
+    }
+
+    .social_slider_pro .twitter_icon {
+        box-shadow: 0px 0px 28px rgb(0 0 0 / 38%), 0px 5px 0px #23a1d7;
+    }
+
+    .social_slider_pro .instagram_icon {
+        box-shadow: 0px 0px 28px rgb(0 0 0 / 38%), 0px 5px 0px #4942cf;
+    }
+
+    .social_slider_pro .pinterest_icon {
+        box-shadow: 0px 0px 28px rgb(0 0 0 / 38%), 0px 5px 0px #da0021
+    }
+
+    .social_slider_pro .custom_icon {
+        box-shadow: 0px 0px 28px rgb(0 0 0 / 38%), 0px 5px 0px <?php echo get_option('custom_color') ?>;
+    }
+
+    <?php if (trim(get_option('position'))==1) {
+
+        ?>.social_slider_pro .facebook_icon,
+        .social_slider_pro .twitter_icon,
+        .social_slider_pro .instagram_icon,
+        .social_slider_pro .pinterest_icon,
+        .social_slider_pro .custom_icon {
+            right: -40px !important;
+        }
+
+        <?php
+    }
+
+    else if (trim(get_option('position'))==0) {
+
+        ?>.social_slider_pro .facebook_icon,
+        .social_slider_pro .twitter_icon,
+        .social_slider_pro .instagram_icon,
+        .social_slider_pro .pinterest_icon,
+        .social_slider_pro .custom_icon {
+            left: -40px !important;
+        }
+
+        <?php
+    }
+}
+
+if (trim(get_option('position'))==1) {
+    if (trim(get_option('border-radius'))==1) {
+
+        ?>.social_slider_pro .facebook_icon,
+        .social_slider_pro .twitter_icon,
+        .social_slider_pro .instagram_icon,
+        .social_slider_pro .pinterest_icon,
+        .social_slider_pro .custom_icon {
+            border-radius: 0 7px 7px 0 !important;
+        }
+
+        <?php
+    }
+
+    ?>.social_slider_pro {
+        left: -370px;
+    }
+
+    .social_slider_pro:hover {
+        transform: translateX(370px);
+    }
+
+    .social_slider_pro .facebook_icon,
+    .social_slider_pro .twitter_icon,
+    .social_slider_pro .instagram_icon,
+    .social_slider_pro .pinterest_icon,
+    .social_slider_pro .custom_icon {
+        float: right;
+        clear: right;
+        right: -32px;
+    }
+
+    <?php
+}
+
+else if (trim(get_option('position'))==0) {
+    if (trim(get_option('border-radius'))==1) {
+
+        ?>.social_slider_pro .facebook_icon,
+        .social_slider_pro .twitter_icon,
+        .social_slider_pro .instagram_icon,
+        .social_slider_pro .pinterest_icon,
+        .social_slider_pro .custom_icon {
+            border-radius: 7px 0 0 7px !important;
+        }
+
+        <?php
+    }
+
+    ?>.social_slider_pro {
+        right: -370px;
+    }
+
+    .social_slider_pro:hover {
+        transform: translateX(-370px);
+    }
+
+    .social_slider_pro .facebook_icon,
+    .social_slider_pro .twitter_icon,
+    .social_slider_pro .instagram_icon,
+    .social_slider_pro .pinterest_icon,
+    .social_slider_pro .custom_icon {
+        float: left;
+        left: -32px;
+        clear: left;
+    }
+
+    <?php
+}
+
+?>.social_slider_pro .custom_icon {
+    background-color: <?php echo get_option('custom_color') ?>;
+}
+
+.social_slider_pro .custom_box {
+    border-left: 10px solid <?php echo get_option('custom_color') ?>;
+    border-right: 10px solid <?php echo get_option('custom_color') ?>;
+}
+
+.social_slider_pro .custom {
+    background-color: <?php echo get_option('custom_color') ?>;
+}
+</style>
+<?php 
+}
+
+add_action( 'admin_menu', 'sliderMenu' );
+
+function sliderMenu()
 {
-    global $widget_settings;
+    add_options_page( 'Responsive Social Slider Widget', 'Responsive Social Slider Widget', 'manage_options', 'responsive-facebook-and-twitter-widget', 'sliderBackend' );
+}
+
+function additional_action_links( $links ) 
+{
+    $links['settings'] = '<a href="' . admin_url( '/options-general.php?page=responsive-facebook-and-twitter-widget' ) . '">' . __( 'Settings' ) . '</a>';
+    return $links;
+}
+   
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ),'additional_action_links', 10, 2 );
+
+function sliderBackend()
+{
+    global $widgetSettings;
     if ( $_POST ) 
     {
-        foreach ( $widget_settings as $setting ) 
+        foreach ( $widgetSettings as $setting ) 
         {
-            $save_setting = sanitize_text_field($_POST[$setting['id']]);
+            $save_setting = htmlentities(stripslashes( $_POST[$setting['id']]));
             update_option($setting['id'], $save_setting);
         }
         echo '<div class="updated fade"><p><strong>' . __('Settings saved.') . '</strong></p></div>';
     }
 
-    echo '<form method="post">';
-        settings_fields('setting-fields');
+    echo '<style>#wpfooter {position: relative !important;}</style>
+        <form method="post">';
+        settings_fields('widget-setting-fields');
         do_settings_sections('responsive-facebook-and-twitter-widget');
-        echo '<h1>' . get_admin_page_title() . '</h1></ br><h3>Follow these steps to find your Facebook & Twitter ID: <a href="https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget" target="_blank">Tutorial</a></h3>
-        <table class="form-table">';
-            foreach ( $widget_settings as $setting ) 
+        echo '<h1>' . get_admin_page_title() . ' Settings</h1></ br><hr>';
+
+        if ( rfatw_fs()->is_not_paying() ) {
+            echo '<p><a href="' . rfatw_fs()->get_upgrade_url() . '" style="font-size: 16px; color: #00ac1a; font-weight: 600;  text-decoration: none;">' . __('Upgrade now to get all premium features unlocked', 'my-text-domain') . '</a></p>';
+        }
+
+        echo '<table class="form-table">';
+            foreach ( $widgetSettings as $setting ) 
             {
                 echo '<tr valign="top"><th scope="row">' . $setting['label'] . '</th><td>';
                 switch ( $setting['type'] ) 
                 {
                     case 'text':
-                        echo '<input type="text" name="' . $setting['id'] . '" value="' . get_option($setting['id']) . '" />';
+                        echo '<input type="text" name="' . $setting['id'] . '" value="' . get_option( $setting['id'] ) . '" />';
                         break;
 
                     case 'textarea':
-                        echo '<textarea cols="30" rows="5" name="' . $setting['id'] . '">' . get_option($setting['id']) . '</textarea>';
+                        echo '<textarea name="' . $setting['id'] . '">' . get_option( $setting['id'] ) . '</textarea>';
                         break;
 
                     case 'radio':
                         echo '<select name="' . $setting['id'] . '">';
-                        foreach ($setting['options'] as $optionn => $optionv) 
+                        foreach ( $setting['options'] as $optionValue => $optionName ) 
                         {
-                            echo '<option value="' . $optionn . '" ' . (($optionn == get_option($setting['id'])) ? ' selected="selected"' : '') . '>' . $optionv . '</option>';
+                            echo '<option value="' . $optionValue . '" ' . ( ($optionValue == get_option($setting['id']) ) ? ' selected="selected"' : '') . '>' . $optionName . '</option>';
                         }
 
                         echo '</select>';
+                        break;
+                    case 'html':
+                        
+                        echo '<textarea name="' . $setting['id'] . '" rows="4" cols="50">' . get_option( $setting['id'] ) . '</textarea>';
+                        break;
+                    case 'separator_ids':
+                
+                        echo '<hr>Follow these steps to find your channel ID: <a href="https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget" target="_blank">click</a>';                       
+                        break;
+                    case 'separator_custom':
+                    
+                        echo '<hr>Find more: <a href="https://fontawesome.com/v4.7.0/icons" target="_blank">icons</a>, <a href="https://www.w3schools.com/colors/colors_picker.asp" target="_blank">colors</a>';                                      
                         break;
                 }
 
