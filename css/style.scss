@@ -18,7 +18,6 @@ $tab-height: 1000px;
     position: fixed;
     z-index: 99999;
     box-sizing: content-box;
-    -webkit-transition: all .5s .2s;
     transition: all .5s .2s;
 
     @media only screen and (min-device-width:0) and (max-width:768px) {
@@ -30,7 +29,6 @@ $tab-height: 1000px;
     }
 
     &:hover {
-        -webkit-transition: all .5s .2s;
         transition: all .5s .2s;
     }
 
@@ -104,8 +102,9 @@ $tab-height: 1000px;
         box-shadow: 0 0 20px -7px #000;
 
         span {
+            -webkit-writing-mode: tb-rl;
+            -ms-writing-mode: tb-rl;
             writing-mode: tb-rl;
-            -webkit-transform: rotate(180deg);
             transform: rotate(180deg);
             color: $font-color;
             font-weight: 600;
@@ -130,7 +129,7 @@ $tab-height: 1000px;
         padding: 25%;
         bottom: 0;
         color: $font-color;
-        width: 17px;
+        width: auto;
         position: absolute;
         font-size: 14px;
         background-color: rgba(0, 0, 0, 0.1);
@@ -144,11 +143,9 @@ $tab-height: 1000px;
         position: relative;
         z-index: 9999;
         display: block;
-        -webkit-transition: all 0.2s ease;
         transition: all 0.2s ease;
 
         &:hover {
-            -webkit-transform: scale(1.07);
             transform: scale(1.07);
         }
     }
@@ -231,11 +228,9 @@ $tab-height: 1000px;
             align-items: center;
             position: relative;
             border-bottom: none !important;
-            -webkit-box-shadow: inset 0 0 100px rgba(255, 255, 255, 0), 0 1px 0 0 rgba(0, 0, 0, 0.05);
             box-shadow: inset 0 0 100px rgba(255, 255, 255, 0), 0 1px 0 0 rgba(0, 0, 0, 0.05);
             background: #f2f2f2;
             text-decoration: none;
-            -webkit-transition: all 0.3s ease;
             transition: all 0.3s ease;
             color: white;
             font-size: 18px;
@@ -279,7 +274,6 @@ $tab-height: 1000px;
             justify-content: center;
             align-items: center;
             background-color: #f7f7f7;
-            -webkit-box-shadow: inset 0 0 100px rgba(255, 255, 255, 0), 0 1px 0 0 rgba(0, 0, 0, 0.05);
             box-shadow: inset 0 0 100px rgba(255, 255, 255, 0), 0 1px 0 0 rgba(0, 0, 0, 0.05);
 
             &__stats {
@@ -315,6 +309,7 @@ $tab-height: 1000px;
             &__image {
                 max-width: 100%;
                 height: auto;
+                -o-object-fit: contain;
                 object-fit: contain;
                 border-radius: 4px;
                 vertical-align: middle;
@@ -335,9 +330,6 @@ $tab-height: 1000px;
                 background: #000000;
                 border-radius: 4px;
                 text-decoration: none;
-                -webkit-transition: opacity 500ms;
-                -moz-transition: opacity 500ms;
-                -o-transition: opacity 500ms;
                 transition: opacity 500ms;
 
                 p {
