@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://jsns.eu
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.5.0
+Version: 1.5.1
 License: GPLv2 or later
 @fs_premium_only /js/
 */
