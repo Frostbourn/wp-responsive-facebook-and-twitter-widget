@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://jsns.eu
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.5.1
+Version: 1.5.2
 License: GPLv2 or later
 @fs_premium_only /js/
 */
@@ -310,14 +310,14 @@ function sliderFrontend()
         
                     if ($iPhone || $iPad ) 
                     {
-                        $fb_url = 'fb://profile/' . get_option('facebook_id');
+                        $fb_url = 'fb://profile/' . get_option('facebookId');
                     } 
                     else if ( $Android ) {
-                        $fb_url = 'fb://page/' . get_option('facebook_id');
+                        $fb_url = 'fb://page/' . get_option('facebookId');
                     }
                     else 
                     {
-                        $fb_url = 'https://facebook.com/' . get_option('facebook_id');
+                        $fb_url = 'https://facebook.com/' . get_option('facebookId');
                     }
                     ?>
         <a class="facebook" href="<?php echo $fb_url ?>" target="_blank">
@@ -702,11 +702,11 @@ function sliderBackend()
                         break;
                     case 'separator_ids':
                 
-                        echo '<hr>Follow these steps to find your channel ID: <a href="https://github.com/Frostbourn/wp-responsive-facebook-and-twitter-widget" target="_blank">click</a>';                       
+                        echo '<hr>1. Get numerical Facebook ID here: <a href="https://lookup-id.com" target="_blank">click</a><br />2. Twitter/Instagram/Pinterest is what comes after the www.twitter.com/ not the whoule URL';                       
                         break;
                     case 'separator_custom':
                     
-                        echo '<hr>Find more: <a href="https://fontawesome.com/v4.7.0/icons" target="_blank">icons</a>, <a href="https://www.w3schools.com/colors/colors_picker.asp" target="_blank">colors</a>';                                      
+                        echo '<hr>Find more: <a href="https://fontawesome.com/icons?d=gallery" target="_blank">icons</a>, <a href="https://www.w3schools.com/colors/colors_picker.asp" target="_blank">colors</a>';                                      
                         break;
                 }
 
