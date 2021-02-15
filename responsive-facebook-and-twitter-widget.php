@@ -6,7 +6,7 @@ Description: Display Facebook and Twitter on your website in beautiful responsiv
 Plugin URI: https://jsns.eu
 AUthor: Jakub Skowroński
 Author URI: https://jakubskowronski.com
-Version: 1.5.2
+Version: 1.5.3
 License: GPLv2 or later
 */
 
@@ -280,6 +280,9 @@ function slider_custom_styles()
         ?>.social_slider_pro label {
         width: 40px !important;
         height: 40px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
 
     .social_slider_pro label span {
@@ -287,7 +290,6 @@ function slider_custom_styles()
     }
 
     .social_slider_pro i {
-        width: 19px !important;
         height: 21px !important;
         display: flex !important;
         justify-content: center !important;
