@@ -88,17 +88,6 @@ $widgetSettings = array(
 ),
 ),
     array(
-    'id'      => 'buttons-label',
-    'type'    => 'radio',
-    'default' => '1',
-    'label'   => 'Show button label',
-    'desc'    => '',
-    'options' => array(
-    0 => 'No',
-    1 => 'Yes',
-),
-),
-    array(
     'id'      => 'fa-cdn',
     'type'    => 'radio',
     'default' => '1',
